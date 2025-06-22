@@ -1,89 +1,88 @@
-import type { Metadata } from "next";
-import React from "react";
+"use client";
+import React, { useState } from "react";
 
-export const metadata: Metadata = {
-  title:
-    "Next.js E-commerce Dashboard | TailAdmin - Next.js Dashboard Template",
-  description: "This is Next.js Home for TailAdmin Dashboard Template",
+const organization = {
+  name: "CEO",
+  children: [
+    {
+      name: "CTO",
+      children: [
+        {
+          name: "Engineering Manager",
+          children: [{ name: "Software Engineer" }, { name: "QA Engineer" }],
+        },
+        { name: "DevOps Manager", children: [{ name: "DevOps Engineer" }] },
+      ],
+    },
+    {
+      name: "CFO",
+      children: [
+        { name: "Accounting Manager", children: [{ name: "Accountant" }] },
+        { name: "Financial Analyst" },
+      ],
+    },
+    {
+      name: "COO",
+      children: [
+        { name: "Operations Manager" },
+        {
+          name: "Customer Support Lead",
+          children: [{ name: "Support Specialist" }],
+        },
+      ],
+    },
+  ],
 };
 
-export default function MonthlyReport() {
- return (
+function OrgNode({ node }) {
+  return (
+    <div className="flex flex-col items-center relative">
+      {/* Node box */}
+      <div className="bg-blue-600 text-white px-4 py-2 rounded shadow relative z-10">
+        {node.name}
+      </div>
+
+      {/* Vertical line to children */}
+      {node.children && (
+        <>
+          <div className="h-6 border-l-2 border-blue-600"></div> {/* vertical line */}
+          <div className="flex space-x-8 relative">
+            {/* Horizontal line connecting children, centered above children */}
+            <div className="absolute top-0 left-0 right-0 flex justify-center">
+              <div className="w-full border-t-2 border-blue-600"></div>
+            </div>
+            {/* Child nodes */}
+            {node.children.map((child, idx) => (
+              <div key={idx} className="flex flex-col items-center relative">
+                {/* Vertical line down to each child */}
+                <div className="h-6 border-l-2 border-blue-600 mb-2"></div>
+                <OrgNode node={child} />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
+    </div>
+  );
+}
+
+export default function SiteOrganization() {
+  const [activeMenu, setActiveMenu] = useState("dashboard");
+
+  return (
     <div className="max-w-5xl mx-auto p-6">
       {/* Title Section */}
       <div className="text-center border-b border-gray-400 pb-4 mb-8">
-        <h1 className="text-xl font-bold leading-tight">
-          Site Organization
-        </h1>
+        <h1 className="text-xl font-bold leading-tight">Site Organization</h1>
       </div>
-
-      {/* Box with text, image, and description columns */}
-      <section className="mb-10">
-        {/* Description columns */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div>
-            <p className="font-semibold text-center">Pemilik Kerjaan</p>
-              <div>
-                {/* Replace the src with your actual image path or URL */}
-                <img
-                  src="https://img.freepik.com/free-vector/quill-pen-logo-template_23-2149852429.jpg?semt=ais_hybrid&w=740"
-                  alt="Related visual"
-                  className="w-full object-cover rounded"
-                />
-              </div>
-            <p className="text-center">Description or content for column 1.</p>
-          </div>
-          <div>
-            <p className="font-semibold text-center">Konsultan Pengawas</p>
-              <div>
-                {/* Replace the src with your actual image path or URL */}
-                <img
-                  src="https://img.freepik.com/free-vector/quill-pen-logo-template_23-2149852429.jpg?semt=ais_hybrid&w=740"
-                  alt="Related visual"
-                  className="w-full object-cover rounded"
-                />
-              </div>
-            <p className="text-center">Description or content for column 2.</p>
-          </div>
-          <div>
-            <p className="font-semibold text-center">Kontraktor Pelaksana</p>
-            <div>
-                {/* Replace the src with your actual image path or URL */}
-                <img
-                  src="https://img.freepik.com/free-vector/quill-pen-logo-template_23-2149852429.jpg?semt=ais_hybrid&w=740"
-                  alt="Related visual"
-                  className="w-full object-cover rounded"
-                />
-              </div>
-            <p className="text-center">Description or content for column 3.</p>
-          </div>
-        </div>
-      </section>
 
       {/* Table Section */}
       <section>
-        <table className="min-w-full border border-gray-300 rounded overflow-hidden">
-          <thead className="bg-gray-100">
-            <tr>
-              <th className="border border-gray-300 py-2 px-4 text-left">No.</th>
-              <th className="border border-gray-300 py-2 px-4 text-left">Hari Ke-</th>
-              <th className="border border-gray-300 py-2 px-4 text-left">Tanggal</th>
-              <th className="border border-gray-300 py-2 px-4 text-left">Progress Bulanan</th>
-              <th className="border border-gray-300 py-2 px-4 text-left">Progress Kumulatif</th>
-            </tr>
-          </thead>
-          <tbody>
-            {/* Example row; add your real data here */}
-            <tr>
-              <td className="border border-gray-300 py-2 px-4">1</td>
-              <td className="border border-gray-300 py-2 px-4">1</td>
-              <td className="border border-gray-300 py-2 px-4">10 Maret 2024</td>
-              <td className="border border-gray-300 py-2 px-4">50%</td>
-              <td className="border border-gray-300 py-2 px-4">50%</td>
-            </tr>
-            {/* Additional rows should be added similarly */}
-          </tbody>
-        </table>
+        <div className="min-h-screen bg-gray-50 p-8">
+          <div className="flex justify-center">
+            <OrgNode node={organization} />
+          </div>
+        </div>
       </section>
     </div>
   );

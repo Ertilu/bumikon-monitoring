@@ -16,13 +16,41 @@ export const metadata: Metadata = {
   description: "This is Next.js Home for TailAdmin Dashboard Template",
 };
 
-const tableData: Order[] = [
+const tableData = [
   {
     id: 1,
     hariKe: "Hari Ke-1",
-    date: "Senin, 5 Agustus 2024",
-    progress: "4.00%",
-    cumulativeProgress: "4.00%",
+    date: new Date('2024-08-05'),
+    progress: 4.0,
+    cumulativeProgress: 4.05,
+  },
+  {
+    id: 2,
+    hariKe: "Hari Ke-2",
+    date: new Date('2024-08-06'),
+    progress: 2.0,
+    cumulativeProgress: 12.0,
+  },
+  {
+    id: 3,
+    hariKe: "Hari Ke-1",
+    date: new Date('2024-08-07'),
+    progress: 7.0,
+    cumulativeProgress: 42.0,
+  },
+  {
+    id: 4,
+    hariKe: "Hari Ke-1",
+    date: new Date('2024-08-08'),
+    progress: 25.0,
+    cumulativeProgress: 75.0,
+  },
+  {
+    id: 5,
+    hariKe: "Hari Ke-1",
+    date: new Date('2024-08-09'),
+    progress: 4.0,
+    cumulativeProgress: 100.0,
   },
 ];
 
@@ -137,13 +165,23 @@ export default function LaporanExecutive() {
                           {item.hariKe}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                          {item?.date}
+                          {(() => {
+                            const options: any = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
+                            const formattedDate = new Intl.DateTimeFormat('id-ID', options).format(item?.date);
+                            return formattedDate
+                          })()}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                          {item?.progress}
+                          {(() => {
+                            const percentStr = `${item?.progress}%`;
+                            return percentStr
+                          })()}
                         </TableCell>
                         <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                          {item?.cumulativeProgress}
+                            {(() => {
+                            const percentStr = `${item?.cumulativeProgress}%`;
+                            return percentStr
+                          })()}
                         </TableCell>
                       </TableRow>
                     ))}
